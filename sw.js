@@ -2,8 +2,8 @@
 // ALCPT Pro Quiz — Service Worker
 // =====================================================
 
-const CACHE_NAME = 'alcpt-pro-v1';
-const STATIC_CACHE = 'alcpt-static-v1';
+const CACHE_NAME = 'alcpt-pro-v2';
+const STATIC_CACHE = 'alcpt-static-v2';
 
 // الملفات اللي هتتخزن للاستخدام offline
 const STATIC_ASSETS = [
