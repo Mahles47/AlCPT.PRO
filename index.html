@@ -29,7 +29,7 @@
             --danger-light: #fca5a5;
             --info: #3b82f6;
             --border: rgba(255,255,255,0.08);
-            --shadow: 0 8px 32px rgba(0,0,0,0.35);
+            --shadow: 0 6px 22px rgba(0,0,0,0.30);
             --glass: blur(20px) saturate(160%);
             --radius: 24px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -37,6 +37,7 @@
             --nav-height: 64px;
             --nav-lift: 14px;
             --content-padding-x: 14px;
+            --bottom-extra: 0px;
         }
 
         [data-theme="light"] {
@@ -46,7 +47,7 @@
             --text: #0f172a;
             --text-secondary: #64748b;
             --border: rgba(0,0,0,0.06);
-            --shadow: 0 8px 32px rgba(0,0,0,0.08);
+            --shadow: 0 5px 18px rgba(0,0,0,0.07);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -133,7 +134,7 @@
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(255,255,255,0.09);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .hud-cap-divider {
@@ -184,12 +185,12 @@
         .hud-stat.correct .stat-icon,
         .hud-stat.correct .stat-value {
             color: var(--success-light);
-            text-shadow: 0 0 12px rgba(16,185,129,0.55);
+            text-shadow: 0 0 7px rgba(16,185,129,0.35);
         }
         .hud-stat.wrong .stat-icon,
         .hud-stat.wrong .stat-value {
             color: var(--danger-light);
-            text-shadow: 0 0 12px rgba(239,68,68,0.5);
+            text-shadow: 0 0 7px rgba(239,68,68,0.32);
         }
 
         /* Micro circular progress ring (conic-gradient), replaces the old percent box */
@@ -741,8 +742,14 @@
 
         /* ========== MAIN CONTENT ========== */
         .main-content {
-            padding-top: calc(var(--hud-height) + env(safe-area-inset-top) + 8px);
-            padding-bottom: calc(var(--nav-height) + var(--nav-lift) + env(safe-area-inset-bottom) + 22px);
+            /* --hud-height is measured by JS from the fixed HUD, whose own padding-top
+               already includes env(safe-area-inset-top). Adding the inset here again pushed
+               the question card down by a second notch height on iPhones (Android was fine
+               because the inset is 0), so the card no longer sits at a standard height. */
+            padding-top: calc(var(--hud-height) + 8px);
+            /* --bottom-extra reserves room for the floating map button above the nav on
+               phones, so the explanation and Next button always scroll fully clear. */
+            padding-bottom: calc(var(--nav-height) + var(--nav-lift) + env(safe-area-inset-bottom) + 22px + var(--bottom-extra));
             padding-left: var(--content-padding-x);
             padding-right: var(--content-padding-x);
             min-height: 100dvh;
@@ -1342,7 +1349,7 @@
             transition: var(--transition);
             min-height: var(--nav-height);
             box-sizing: border-box;
-            box-shadow: 0 10px 28px rgba(0,0,0,0.32);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.24);
             overflow: hidden;
         }
 
@@ -1391,7 +1398,46 @@
         .empty-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.6; }
         .empty-text { font-size: 1.1rem; font-weight: 600; }
 
+        /* ========== LIGHT THEME REFINEMENTS ==========
+           The stats capsule, progress ring and bottom nav were hard-coded dark, which
+           left a heavy grey pill with faint labels and muddy shadows on the white page.
+           Give them light surfaces, darker readable labels and much softer shadows. */
+        [data-theme="light"] .hud-capsule {
+            background: rgba(255,255,255,0.75);
+            border: 1px solid rgba(0,0,0,0.07);
+            box-shadow: 0 3px 10px rgba(15,23,42,0.08), inset 0 1px 0 rgba(255,255,255,0.65);
+        }
+        [data-theme="light"] .hud-cap-divider {
+            background: linear-gradient(to bottom, transparent, rgba(15,23,42,0.16), transparent);
+        }
+        [data-theme="light"] .hud-stat .stat-label { color: #475569; }
+        [data-theme="light"] .hud-stat.correct .stat-icon,
+        [data-theme="light"] .hud-stat.correct .stat-value {
+            color: #059669;
+            text-shadow: none;
+        }
+        [data-theme="light"] .hud-stat.wrong .stat-icon,
+        [data-theme="light"] .hud-stat.wrong .stat-value {
+            color: #dc2626;
+            text-shadow: none;
+        }
+        [data-theme="light"] .progress-ring {
+            background: conic-gradient(var(--primary-light) calc(var(--pct) * 1%), rgba(15,23,42,0.10) 0);
+        }
+        [data-theme="light"] .progress-ring::before { background: #ffffff; }
+        [data-theme="light"] .progress-ring .stat-value { color: #0f172a; }
+        [data-theme="light"] .bottom-nav {
+            box-shadow: 0 5px 16px rgba(15,23,42,0.10);
+        }
+
         /* ========== RESPONSIVE ========== */
+        @media (max-width: 480px) {
+            :root {
+                /* Clear the floating question-map button (44px + gap) above the nav. */
+                --bottom-extra: 48px;
+            }
+        }
+
         @media (min-width: 600px) {
             :root {
                 --hud-height: 138px;
@@ -3836,9 +3882,19 @@ self.addEventListener('fetch', e => {
         renderQuiz();
         updateHUD();
         renderNavGrid();
-        // Measure HUD after fonts load
+        // Measure HUD after fonts load, then keep re-measuring whenever the HUD or nav
+        // change size (webfont swap, Safari toolbar show/hide, rotation) so the card
+        // stays at a standard position instead of shifting up and down.
         setTimeout(updateHudHeight, 200);
+        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(updateHudHeight); }
         window.addEventListener('resize', updateHudHeight);
+        if ('ResizeObserver' in window) {
+            const hudResizeObserver = new ResizeObserver(updateHudHeight);
+            const topHudEl = document.querySelector('.top-hud');
+            const bottomNavEl = document.querySelector('.bottom-nav');
+            if (topHudEl) hudResizeObserver.observe(topHudEl);
+            if (bottomNavEl) hudResizeObserver.observe(bottomNavEl);
+        }
 
         const importInput = document.getElementById('streakImportInput');
         if (importInput) {
