@@ -673,8 +673,8 @@
         .theme-toggle {
             position: relative;
             z-index: 1001;
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             flex-shrink: 0;
             border-radius: 50%;
             background: var(--surface);
@@ -1026,8 +1026,8 @@
             flex-shrink: 0;
         }
         .hint-icon-btn {
-            width: 28px;
-            height: 28px;
+            width: 38px;
+            height: 38px;
             flex-shrink: 0;
             border-radius: 50%;
             background: rgba(245,158,11,0.12);
@@ -1251,7 +1251,11 @@
             font-weight: 800;
             padding: 0 0 16px;
             color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+        .screen-title .ic { width: 22px; height: 22px; color: var(--primary); }
 
         .categories-grid {
             display: grid;
@@ -1291,8 +1295,25 @@
         }
         .cat-card.active::after { opacity: 1; }
 
-        .cat-icon { font-size: 2.8rem; margin-bottom: 10px; display: block; }
-        .cat-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+        .cat-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        .cat-icon .ic { width: 30px; height: 30px; }
+        .cat-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; min-height: 1.35em; }
+        .cat-name-en {
+            direction: ltr;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            min-height: 1em;
+        }
         .cat-count { color: var(--text-secondary); font-size: 0.8rem; font-weight: 500; }
 
         /* ========== STATS SCREEN ========== */
@@ -1313,7 +1334,13 @@
             text-align: center;
             transition: var(--transition);
         }
-        .stat-box .stat-icon2 { font-size: 2rem; margin-bottom: 8px; }
+        .stat-box .stat-icon2 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+        .stat-box .stat-icon2 .ic { width: 26px; height: 26px; }
         .stat-box .stat-number2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 4px; }
         .stat-box .stat-label2 { font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; }
 
@@ -1414,7 +1441,8 @@
             background: var(--primary);
             border-radius: 2px;
         }
-        .nav-icon { font-size: 1.25rem; line-height: 1; transition: transform 0.2s; }
+        .nav-icon { font-size: 1.25rem; line-height: 1; transition: transform 0.2s; display: inline-flex; align-items: center; justify-content: center; }
+        .nav-icon .ic { width: 22px; height: 22px; }
         .nav-item:active .nav-icon { transform: scale(0.85); }
 
         /* ========== EMPTY STATE ========== */
@@ -1425,6 +1453,42 @@
         }
         .empty-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.6; }
         .empty-text { font-size: 1.1rem; font-weight: 600; }
+
+        /* ========== CONSISTENT ICON SET ==========
+           One stroke-style SVG icon family (currentColor) replaces the mixed
+           emoji styles across navigation, categories and controls. Colors keep
+           coming from the existing context (nav active state, stat colors, amber
+           identity). */
+        .ic { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+        .app-logo {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        .hl-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+        .hl-label {
+            font-size: 0.56rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            line-height: 1;
+        }
+        .theme-toggle .ic { width: 19px; height: 19px; }
+        .hint-icon-btn .ic { width: 17px; height: 17px; }
+        .streak-btn .ic, .btn-secondary .ic, .review-exit-btn .ic {
+            width: 16px;
+            height: 16px;
+            margin-inline-end: 2px;
+        }
+        .nav-grid-toggle .ic { width: 20px; height: 20px; }
+        .empty-icon { display: flex; justify-content: center; color: var(--text-secondary); }
+        .empty-icon .ic { width: 52px; height: 52px; }
 
         /* ========== LIGHT THEME REFINEMENTS ==========
            The stats capsule, progress ring and bottom nav were hard-coded dark, which
@@ -1775,7 +1839,7 @@
 
     <!-- Nav Grid Toggle Button -->
     <button class="nav-grid-toggle" id="navGridToggle" onclick="toggleNavGrid()" title="لوحة التنقل">
-        🗂️
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         <span class="badge" id="navGridBadge">0</span>
     </button>
 
@@ -1786,7 +1850,7 @@
     <div class="nav-grid-panel" id="navGridPanel">
         <div class="nav-grid-handle"></div>
         <div class="nav-grid-header">
-            <div class="nav-grid-title">🗂️ لوحة تنقل الأسئلة</div>
+            <div class="nav-grid-title"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> لوحة تنقل الأسئلة</div>
             <button class="nav-grid-close" onclick="closeNavGrid()">✕</button>
         </div>
         <div class="nav-grid-legend">
@@ -1804,10 +1868,13 @@
     <!-- Top HUD -->
     <header class="top-hud" id="topHud">
         <div class="hud-top-row">
-            <div class="app-title">🎯 ALCPT Pro</div>
+            <div class="app-title"><img src="./icon-192.png" alt="" class="app-logo"> ALCPT Pro</div>
             <div class="hud-top-left-group">
-                <button class="hl-toggle on" id="hlToggle" role="switch" aria-checked="true" aria-label="تظليل الكلمة المفتاحية في السؤال" title="تظليل الكلمة المفتاحية"></button>
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+                <span class="hl-wrap">
+                    <button class="hl-toggle on" id="hlToggle" role="switch" aria-checked="true" aria-label="إخفاء المساعدات" title="إخفاء المساعدات"></button>
+                    <span class="hl-label">إخفاء المساعدات</span>
+                </span>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
                 <div class="streak-badge streak-zero" id="streakBadge" onclick="openStreakModal()">
                     <span class="streak-flame" id="streakFlameIcon">🔥</span>
                     <span id="streakCountText">0</span>
@@ -1856,32 +1923,32 @@
 
         <!-- Categories Screen -->
         <div id="categories-screen" class="screen">
-            <div class="screen-title">📂 اختر القسم</div>
+            <div class="screen-title"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg> اختر القسم</div>
             <div class="categories-grid" id="categoriesGrid"></div>
         </div>
 
         <!-- Stats Screen -->
         <div id="stats-screen" class="screen">
-            <div class="screen-title">📈 إحصائياتك</div>
-            <button class="streak-btn" style="margin-bottom:16px;" onclick="showSessionSummary()">📅 إنجازك النهارده</button>
+            <div class="screen-title"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg> إحصائياتك</div>
+            <button class="streak-btn" style="margin-bottom:16px;" onclick="showSessionSummary()"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg> إنجازك النهارده</button>
             <div class="stats-grid">
                 <div class="stat-box">
-                    <div class="stat-icon2">✅</div>
+                    <div class="stat-icon2" style="color:var(--success)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
                     <div class="stat-number2" id="totalCorrect" style="color:var(--success)">0</div>
                     <div class="stat-label2">إجابات صحيحة</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-icon2">❌</div>
+                    <div class="stat-icon2" style="color:var(--danger)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></div>
                     <div class="stat-number2" id="totalWrong" style="color:var(--danger)">0</div>
                     <div class="stat-label2">إجابات خاطئة</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-icon2">📊</div>
+                    <div class="stat-icon2" style="color:var(--info)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div>
                     <div class="stat-number2" id="totalAnswered">0</div>
                     <div class="stat-label2">مجتمع الإجابات</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-icon2">🎯</div>
+                    <div class="stat-icon2" style="color:var(--primary)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
                     <div class="stat-number2" id="accuracyRate">0%</div>
                     <div class="stat-label2">نسبة الدقة</div>
                 </div>
@@ -1913,7 +1980,7 @@
                 </div>
             </div>
             <div style="padding: 20px 16px;">
-                <button class="btn-secondary" style="width:100%; margin-bottom:10px;" onclick="resetQuiz()">🔄 إعادة الاختبار من البداية</button>
+                <button class="btn-secondary" style="width:100%; margin-bottom:10px;" onclick="resetQuiz()"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> إعادة الاختبار من البداية</button>
                 <button class="btn-secondary" style="width:100%;" onclick="resetCategoryProgress()">🧹 مسح تقدم القسم الحالي فقط</button>
             </div>
         </div>
@@ -1921,7 +1988,7 @@
         <!-- ===== REVIEW MODE SCREEN (Mistakes Bank) ===== -->
         <div id="review-screen" class="screen">
             <div class="review-header">
-                <button class="review-exit-btn" onclick="exitReviewMode()">⬅️ رجوع</button>
+                <button class="review-exit-btn" onclick="exitReviewMode()"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> رجوع</button>
                 <div class="review-title">💪 الأخطاء</div>
                 <span class="review-counter-pill" id="reviewCountPill">0 سؤال</span>
             </div>
@@ -1943,15 +2010,15 @@
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <button class="nav-item active" data-screen="quiz-screen" onclick="showScreen('quiz-screen')">
-            <span class="nav-icon">📝</span>
+            <span class="nav-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9.5 12a2.5 2.5 0 1 1 3.6 2.23c-.7.32-1.1.78-1.1 1.52"/><path d="M12 18h.01"/></svg></span>
             <span>الأسئلة</span>
         </button>
         <button class="nav-item" data-screen="categories-screen" onclick="showScreen('categories-screen')">
-            <span class="nav-icon">📂</span>
+            <span class="nav-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></span>
             <span>الأقسام</span>
         </button>
         <button class="nav-item" data-screen="stats-screen" onclick="showScreen('stats-screen')">
-            <span class="nav-icon">📈</span>
+            <span class="nav-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
             <span>الإحصائيات</span>
         </button>
     </nav>
@@ -1976,12 +2043,37 @@
     </div>
 
     <script>
+    // ===================== ICON SET =====================
+    // One stroke-style SVG family for dynamic markup (static HTML inlines the
+    // same paths). currentColor keeps each context's existing color.
+    const ICONS = {
+        library: '<path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/>',
+        pencil: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+        book: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+        message: '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+        bulb: '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/>',
+        moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+        sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+        rotate: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+        folder: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+        inbox: '<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+        check: '<path d="M20 6 9 17l-5-5"/>',
+        chart: '<path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+        calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
+        arrowL: '<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>',
+        arrowR: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>'
+    };
+    function icon(name, size) {
+        size = size || 20;
+        return '<svg class="ic" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[name] || '') + '</svg>';
+    }
+
     // ===================== DATA =====================
     const categories = [
-    { id: 'all', name: 'الكل', icon: '📚' },
-    { id: 'grammar', name: 'Grammar - القواعد', icon: '📝' },
-    { id: 'synonyms', name: 'Synonyms - المترادفات', icon: '📖' },
-    { id: 'vocabulary', name: 'Vocabulary - المفردات', icon: '💬' }
+    { id: 'all', name: 'الكل', en: 'All', iconKey: 'library' },
+    { id: 'grammar', name: 'القواعد', en: 'Grammar', iconKey: 'pencil' },
+    { id: 'synonyms', name: 'المترادفات', en: 'Synonyms', iconKey: 'book' },
+    { id: 'vocabulary', name: 'المفردات', en: 'Vocabulary', iconKey: 'message' }
 ];
 // ========== Data Cleaning Function (extraction-artifact fixer) ==========
 function cleanAndFixQuestionsDatabase(questionsArray) {
@@ -2239,14 +2331,14 @@ self.addEventListener('fetch', e => {
     // ===================== THEME =====================
     function initTheme() {
         const saved = localStorage.getItem('alcpt_theme');
-        if (saved === 'light') { isDark = false; document.body.setAttribute('data-theme', 'light'); document.getElementById('themeToggle').textContent = '☀️'; }
-        else { isDark = true; document.body.removeAttribute('data-theme'); document.getElementById('themeToggle').textContent = '🌙'; }
+        if (saved === 'light') { isDark = false; document.body.setAttribute('data-theme', 'light'); document.getElementById('themeToggle').innerHTML = icon('sun', 19); }
+        else { isDark = true; document.body.removeAttribute('data-theme'); document.getElementById('themeToggle').innerHTML = icon('moon', 19); }
     }
 
     document.getElementById('themeToggle').addEventListener('click', () => {
         isDark = !isDark;
-        if (isDark) { document.body.removeAttribute('data-theme'); localStorage.setItem('alcpt_theme', 'dark'); document.getElementById('themeToggle').textContent = '🌙'; }
-        else { document.body.setAttribute('data-theme', 'light'); localStorage.setItem('alcpt_theme', 'light'); document.getElementById('themeToggle').textContent = '☀️'; }
+        if (isDark) { document.body.removeAttribute('data-theme'); localStorage.setItem('alcpt_theme', 'dark'); document.getElementById('themeToggle').innerHTML = icon('moon', 19); }
+        else { document.body.setAttribute('data-theme', 'light'); localStorage.setItem('alcpt_theme', 'light'); document.getElementById('themeToggle').innerHTML = icon('sun', 19); }
     });
 
     // ===================== LOCAL STORAGE =====================
@@ -2682,7 +2774,7 @@ self.addEventListener('fetch', e => {
             <div class="streak-count-big">${streakCount} ${streakCount === 1 ? 'يوم' : 'أيام'}</div>
             <div class="streak-sub">${msg}</div>
             ${buildWeekRowHTML()}
-            <button class="streak-btn" onclick="closeStreakModal()" style="margin-bottom:10px;">يلا نذاكر 📚</button>
+            <button class="streak-btn" onclick="closeStreakModal()" style="margin-bottom:10px;">${icon('book', 16)} يلا نذاكر</button>
             <button class="streak-backup-btn" style="width:100%;" onclick="exportStreakBackup(false)">💾 احفظ نسخة احتياطية كاملة (تقدم + سلسلة)</button>
         `;
 
@@ -2758,7 +2850,7 @@ self.addEventListener('fetch', e => {
             ${progressHTML}
             ${buildWeekRowHTML()}
             ${buildFreezeRowHTML()}
-            <button class="streak-btn" onclick="closeStreakModal()">تمام 👍</button>
+            <button class="streak-btn" onclick="closeStreakModal()">${icon('check', 16)} تمام</button>
             <div style="display:flex; gap:8px; margin-top:10px;">
                 <button class="streak-backup-btn" onclick="exportStreakBackup(false)">💾 نسخة احتياطية كاملة</button>
                 <button class="streak-backup-btn" onclick="document.getElementById('streakImportInput').click()">📤 استرجاع كل حاجة</button>
@@ -2795,7 +2887,7 @@ self.addEventListener('fetch', e => {
         }
 
         content.innerHTML = `
-            <span class="streak-icon-big">📊</span>
+            <span class="streak-icon-big" style="color:var(--primary)">${icon('chart', 44)}</span>
             <h2>إنجازك النهارده</h2>
             <div class="streak-count-big">${todayTotal}</div>
             <div class="streak-sub">سؤال اتحل النهارده</div>
@@ -2815,8 +2907,8 @@ self.addEventListener('fetch', e => {
             </div>
             <div class="streak-progress-track"><div class="streak-progress-fill" style="width:${pct}%"></div></div>
             <div class="streak-progress-label">${encouragement}</div>
-            <button class="streak-btn" onclick="closeStreakModal()">تمام 👍</button>
-            ${todayAnsweredNs.length > 0 ? `<button class="streak-backup-btn" style="width:100%; margin-top:8px;" onclick="resetTodayProgress()">🔄 إعادة مذاكرة اليوم (${todayAnsweredNs.length} سؤال)</button>` : ''}
+            <button class="streak-btn" onclick="closeStreakModal()">${icon('check', 16)} تمام</button>
+            ${todayAnsweredNs.length > 0 ? `<button class="streak-backup-btn" style="width:100%; margin-top:8px;" onclick="resetTodayProgress()">${icon('rotate', 15)} إعادة مذاكرة اليوم (${todayAnsweredNs.length} سؤال)</button>` : ''}
         `;
         overlay.classList.add('show');
     }
@@ -2862,7 +2954,7 @@ self.addEventListener('fetch', e => {
         const filtered = getFiltered();
 
         if (filtered.length === 0) {
-            container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">لا توجد أسئلة في هذا القسم</div></div>';
+            container.innerHTML = '<div class="empty-state"><div class="empty-icon">' + icon('inbox', 52) + '</div><div class="empty-text">لا توجد أسئلة في هذا القسم</div></div>';
             updateHUD();
             renderNavGrid();
             return;
@@ -2890,7 +2982,7 @@ self.addEventListener('fetch', e => {
         html += '<div class="question-header">';
         html += '<span class="q-badge">س ' + (currentIndex + 1) + ' / ' + filtered.length + '</span>';
         html += '<div class="hint-icon-wrap">';
-        html += '<button class="hint-icon-btn" id="hintIconBtn" onclick="toggleKeywordHint(\'quiz\')" title="تلميح الكلمة المفتاحية">💡</button>';
+        html += '<button class="hint-icon-btn" id="hintIconBtn" onclick="toggleKeywordHint(\'quiz\')" title="تلميح الكلمة المفتاحية">' + icon('bulb', 17) + '</button>';
         html += '</div>';
         html += '</div>';
 
@@ -2928,11 +3020,11 @@ self.addEventListener('fetch', e => {
 
         // Navigation bar with Prev + Next
         html += '<div class="nav-action-bar">';
-        html += '<button class="btn-prev" onclick="prevQuestion()" ' + (hasPrev ? '' : 'disabled') + '>➡️ السابق</button>';
+        html += '<button class="btn-prev" onclick="prevQuestion()" ' + (hasPrev ? '' : 'disabled') + '>' + icon('arrowR', 15) + ' السابق</button>';
         if (isAnswered) {
-            html += '<button class="btn-primary" onclick="nextQuestion()">التالي ⬅️</button>';
+            html += '<button class="btn-primary" onclick="nextQuestion()">التالي ' + icon('arrowL', 15) + '</button>';
         } else {
-            html += '<button class="btn-primary" style="opacity:0.3; cursor:default;" disabled>التالي ⬅️</button>';
+            html += '<button class="btn-primary" style="opacity:0.3; cursor:default;" disabled>التالي ' + icon('arrowL', 15) + '</button>';
         }
         html += '</div>';
 
@@ -2967,10 +3059,10 @@ self.addEventListener('fetch', e => {
                         </div>
                     </div>
                     <div class="action-bar">
-                        <button class="btn-primary" onclick="resetCategoryProgress()">إعادة القسم 🔄</button>
-                        <button class="btn-secondary" onclick="showScreen('categories-screen')">الأقسام 📂</button>
+                        <button class="btn-primary" onclick="resetCategoryProgress()">${icon('rotate', 16)} إعادة القسم</button>
+                        <button class="btn-secondary" onclick="showScreen('categories-screen')">${icon('folder', 16)} الأقسام</button>
                     </div>
-                    <button class="streak-btn" style="margin-top:12px;" onclick="showSessionSummary()">📊 إنجازك النهارده</button>
+                    <button class="streak-btn" style="margin-top:12px;" onclick="showSessionSummary()">${icon('calendar', 16)} إنجازك النهارده</button>
                 </div>
             </div>
         `;
@@ -3116,8 +3208,8 @@ self.addEventListener('fetch', e => {
             const filtered = getFiltered();
             const hasPrev = currentIndex > 0;
             navBar.innerHTML =
-                '<button class="btn-prev" onclick="prevQuestion()" ' + (hasPrev ? '' : 'disabled') + '>➡️ السابق</button>' +
-                '<button class="btn-primary" onclick="nextQuestion()">التالي ⬅️</button>';
+                '<button class="btn-prev" onclick="prevQuestion()" ' + (hasPrev ? '' : 'disabled') + '>' + icon('arrowR', 15) + ' السابق</button>' +
+                '<button class="btn-primary" onclick="nextQuestion()">التالي ' + icon('arrowL', 15) + '</button>';
         }
 
         // Auto-advance on correct answer
@@ -3218,8 +3310,9 @@ self.addEventListener('fetch', e => {
             const div = document.createElement('div');
             div.className = 'cat-card' + (cat.id === currentCategory ? ' active' : '');
             div.innerHTML = `
-                <span class="cat-icon">${cat.icon}</span>
+                <span class="cat-icon">${icon(cat.iconKey, 30)}</span>
                 <div class="cat-name">${cat.name}</div>
+                <div class="cat-name-en">${cat.en}</div>
                 <div class="cat-count">${count} سؤال</div>
             `;
             div.onclick = () => selectCategory(cat.id);
@@ -3347,7 +3440,7 @@ self.addEventListener('fetch', e => {
                     <div class="re-icon">🏆</div>
                     <h3>بنك الأخطاء فاضي!</h3>
                     <p>لما تغلط في سؤال هيتحفظ هنا عشان تراجعه. استمر في المذاكرة!</p>
-                    <button class="streak-btn" style="margin-top:8px;" onclick="exitReviewMode()">رجوع للمذاكرة 📝</button>
+                    <button class="streak-btn" style="margin-top:8px;" onclick="exitReviewMode()">${icon('pencil', 16)} رجوع للمذاكرة</button>
                 </div>`;
             document.getElementById('reviewCountPill').textContent = '0 سؤال';
             showScreen('review-screen');
@@ -3375,8 +3468,8 @@ self.addEventListener('fetch', e => {
                     <p>${remaining === 0
                         ? 'البنك فاضي تماماً، إنت نجم! 🌟'
                         : 'لسه فيه ' + remaining + ' سؤال في البنك. ذاكرهم تاني؟'}</p>
-                    <button class="streak-btn" style="margin-bottom:10px;" onclick="${remaining > 0 ? 'initReviewMode()' : 'exitReviewMode()'}">${remaining > 0 ? 'جولة تانية 🔁' : 'تمام 👍'}</button>
-                    <button class="review-exit-btn" style="width:100%; justify-content:center; margin-top:4px;" onclick="exitReviewMode()">رجوع للمذاكرة 📝</button>
+                    <button class="streak-btn" style="margin-bottom:10px;" onclick="${remaining > 0 ? 'initReviewMode()' : 'exitReviewMode()'}">${(remaining > 0 ? icon('rotate', 16) + ' جولة تانية' : icon('check', 16) + ' تمام')}</button>
+                    <button class="review-exit-btn" style="width:100%; justify-content:center; margin-top:4px;" onclick="exitReviewMode()">${icon('pencil', 16)} رجوع للمذاكرة</button>
                 </div>`;
             return;
         }
@@ -3404,7 +3497,7 @@ self.addEventListener('fetch', e => {
         html += `<div class="question-header">
                     <span class="q-badge">س ${reviewCurrentIdx + 1} / ${reviewQueue.length}</span>
                     <div class="hint-icon-wrap">
-                        <button class="hint-icon-btn" id="reviewHintIconBtn" onclick="toggleKeywordHint('review')" title="تلميح الكلمة المفتاحية">💡</button>
+                        <button class="hint-icon-btn" id="reviewHintIconBtn" onclick="toggleKeywordHint('review')" title="تلميح الكلمة المفتاحية">${icon('bulb', 17)}</button>
                     </div>
                  </div>`;
         html += `<div class="kw-reveal-row" id="reviewKwRevealBox"><span class="kw-reveal-text">${escapeHtml(buildQuickHint(item))}</span></div>`;
