@@ -4067,7 +4067,7 @@ self.addEventListener('fetch', e => {
         });
         // شيل أسئلة القسم ده من قائمة الأخطاء كمان، عشان مسح التقدم يبقى شامل للقسم فعلاً
         const bank = loadMistakes();
-        const newBank = bank.filter(e => !nsInCategory.has(e.question.n));
+        const newBank = bank.filter(e => !nsInCategory.has(e.n));
         if (newBank.length !== bank.length) saveMistakes(newBank);
         if (changed) {
             currentIndex = 0;
@@ -4358,4 +4358,4 @@ self.addEventListener('fetch', e => {
 
     </script>
 </body>
-                        </html>
+                    </html>
