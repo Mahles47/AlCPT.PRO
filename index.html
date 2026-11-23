@@ -4051,12 +4051,21 @@ self.addEventListener('fetch', e => {
     
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      // ضفنا ?v=2 عشان نجبر المتصفح يقرأ النسخة الجديدة حالا ويحدث الأيقونة
-      navigator.serviceWorker.register('./sw.js?v=2', { scope: './' })
+      // updateViaCache: 'none' عشان المتصفح ميستخدمش الكاش بتاعه لما يشيك على نسخة جديدة من sw.js
+      navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' })
         .then(reg => {
           console.log('Service Worker registered successfully with scope: ', reg.scope);
         })
         .catch(err => console.error('Service Worker registration failed: ', err));
+      // لو فيه نسخة قديمة شغالة، أول ما الجديدة تاخد التحكم نعمل ريلود مرة واحدة عشان التحديث يظهر فوراً
+      if (navigator.serviceWorker.controller) {
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (refreshing) return;
+          refreshing = true;
+          location.reload();
+        });
+      }
     });
   }
 

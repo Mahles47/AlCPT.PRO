@@ -1,4 +1,4 @@
-const CACHE_NAME = 'alcpt-pro-v13';
+const CACHE_NAME = 'alcpt-pro-v14';
 const ASSETS = [
   './',
   './index.html',
@@ -35,6 +35,19 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
 
+  // صفحات التنقل: الشبكة أولاً عشان أي تحديث يوصل فوراً، والكاش احتياطي وقت الأوفلاين
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).then((networkResponse) => {
+        const copy = networkResponse.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
+        return networkResponse;
+      }).catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
+  // باقي الملفات الثابتة: الكاش أولاً زي ما هو
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -50,10 +63,6 @@ self.addEventListener('fetch', (e) => {
         });
         return networkResponse;
       });
-    }).catch(() => {
-      if (e.request.mode === 'navigate') {
-        return caches.match('./index.html');
-      }
-    })
+    }).catch(() => caches.match('./index.html'))
   );
 });
