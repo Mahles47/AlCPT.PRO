@@ -1,4 +1,4 @@
-const CACHE_NAME = 'alcpt-pro-v10';
+const CACHE_NAME = 'alcpt-pro-v11';
 const ASSETS = [
   './',
   './index.html',

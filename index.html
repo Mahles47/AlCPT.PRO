@@ -982,14 +982,14 @@
         }
 
         .explanation-box {
-            margin-top: 12px;
-            padding: 12px 14px;
+            margin-top: 14px;
+            padding: 14px 16px;
             background: rgba(59,130,246,0.08);
             border-right: 4px solid var(--info);
-            border-radius: 12px;
+            border-radius: 14px;
             color: #93c5fd;
-            font-size: 0.88rem;
-            line-height: 1.55;
+            font-size: 1rem;
+            line-height: 1.8;
             display: none;
             position: relative;
             z-index: 1;
@@ -1000,7 +1000,19 @@
             transition: opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1), transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .explanation-box.show { display: block; opacity: 1; transform: scale(1); }
+        .explanation-box .exp-heading {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 1.02rem;
+        }
         .explanation-box strong { color: var(--info); }
+        /* Light theme: the dark-theme light-blue text was too faint on the light
+           blue tint — switch to readable deep blues. */
+        [data-theme="light"] .explanation-box {
+            background: rgba(37,99,235,0.07);
+            color: #1e3a8a;
+        }
+        [data-theme="light"] .explanation-box strong { color: #1d4ed8; }
 
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-12px); }
@@ -1050,60 +1062,76 @@
             text-decoration-color: rgba(167,139,250,0.8);
         }
         .kw-highlight.kw-clickable:active { opacity: 0.7; }
+        .kw-highlight.kw-clickable.active {
+            background: rgba(167,139,250,0.18);
+            border-radius: 5px;
+        }
 
-        #kwDefTooltip {
-            position: fixed;
-            z-index: 9600;
-            max-width: 240px;
+        /* In-flow dictionary panel — expands BETWEEN the question text and the
+           options list, pushing the answers down instead of floating over them,
+           so a definition can never cover an answer. Same purple cue, same
+           trigger (tap the highlighted word), same definition text. */
+        .kw-def-panel {
+            position: relative;
+            z-index: 1;
+            direction: ltr;
+            text-align: left;
+            margin: -2px 0 12px;
+            padding: 10px 40px 10px 14px;
             background: linear-gradient(135deg, #4c1d95, #1e3a8a);
             border: 1px solid rgba(167,139,250,0.5);
             border-radius: 14px;
-            padding: 10px 14px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(167,139,250,0.1);
             opacity: 0;
-            pointer-events: none;
-            transform: translateY(-6px) scale(0.95);
-            transition: opacity 0.18s ease, transform 0.18s ease;
-            text-align: center;
+            transform: translateY(-6px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            flex-shrink: 0;
         }
-        #kwDefTooltip.show {
+        .kw-def-panel.show {
             opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
-        #kwDefTooltip .def-word {
+        .kw-def-panel .def-word {
             font-size: 0.8rem;
             color: rgba(255,255,255,0.65);
             font-family: 'Poppins', sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        #kwDefTooltip .def-meaning {
+        .kw-def-panel .def-meaning {
             font-size: 1rem;
             font-weight: 700;
             color: #fff;
             font-family: 'Poppins', sans-serif;
             margin-top: 2px;
+            line-height: 1.5;
         }
-        #kwDefTooltip::before {
-            content: '';
+        .kw-def-panel .def-close {
             position: absolute;
-            top: -7px;
-            left: var(--def-arrow-left, 50%);
-            transform: translateX(-50%);
-            border-width: 0 7px 7px;
-            border-style: solid;
-            border-color: transparent transparent rgba(167,139,250,0.5) transparent;
+            top: 6px;
+            right: 8px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.14);
+            color: rgba(255,255,255,0.85);
+            font-size: 0.85rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        #kwDefTooltip::after {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: var(--def-arrow-left, 50%);
-            transform: translateX(-50%);
-            border-width: 0 6px 6px;
-            border-style: solid;
-            border-color: transparent transparent #4c1d95 transparent;
+        .kw-def-panel .def-close:active { transform: scale(0.88); }
+        [data-theme="light"] .kw-def-panel {
+            background: rgba(124,58,237,0.08);
+            border-color: rgba(124,58,237,0.35);
+        }
+        [data-theme="light"] .kw-def-panel .def-word { color: rgba(76,29,149,0.6); }
+        [data-theme="light"] .kw-def-panel .def-meaning { color: #4c1d95; }
+        [data-theme="light"] .kw-def-panel .def-close {
+            background: rgba(76,29,149,0.10);
+            color: #4c1d95;
         }
 
         /* In-flow reveal row — sits BETWEEN the header and the question text and
@@ -1908,12 +1936,9 @@
         <div class="tt-ar" id="ttAr"></div>
     </div>
 
-    <!-- English Offline Def Tooltip (singleton, repositioned via JS) - shown when
-         tapping the highlighted keyword inside the question itself -->
-    <div id="kwDefTooltip" role="tooltip">
-        <div class="def-word" id="defWord"></div>
-        <div class="def-meaning" id="defMeaning"></div>
-    </div>
+    <!-- English Offline Def panel is created in-flow inside the question card
+         by toggleDefTooltip (see JS) - it expands beneath the question text so
+         it never floats over the answer options. -->
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
@@ -2899,7 +2924,7 @@ self.addEventListener('fetch', e => {
         // AUTOMATICALLY (see handleAnswer). If this question was already answered before
         // (e.g. navigated back to it), render it already visible.
         html += '<div class="explanation-box' + (isAnswered ? ' show' : '') + '" id="expBox">';
-        html += '💡 <strong>القاعدة:</strong> ' + escapeHtml(item.logic) + '</div>';
+        html += '<span class="exp-heading">💡 <strong>القاعدة:</strong></span> ' + escapeHtml(item.logic) + '</div>';
 
         // Navigation bar with Prev + Next
         html += '<div class="nav-action-bar">';
@@ -3394,7 +3419,7 @@ self.addEventListener('fetch', e => {
         });
         html += `</div>`;
         html += `<div class="explanation-box" id="reviewExpBox">`;
-        html += `💡 <strong>القاعدة:</strong> ${escapeHtml(item.logic)}</div>`;
+        html += `<span class="exp-heading">💡 <strong>القاعدة:</strong></span> ${escapeHtml(item.logic)}</div>`;
         html += `</div></div>`;
         container.innerHTML = html;
     }
@@ -3559,9 +3584,10 @@ self.addEventListener('fetch', e => {
 
     function toggleDefTooltip(event, wordEl) {
         event.stopPropagation();
-        const tooltip = document.getElementById('kwDefTooltip');
+        const card = wordEl.closest('.question-card');
+        if (!card) return;
 
-        if (_defTooltipTarget === wordEl && tooltip.classList.contains('show')) {
+        if (_defTooltipTarget === wordEl && card.querySelector('.kw-def-panel')) {
             closeDefTooltip();
             return;
         }
@@ -3569,35 +3595,38 @@ self.addEventListener('fetch', e => {
         const def = wordEl.dataset.def || '';
         if (!def) return;
 
-        document.getElementById('defWord').textContent = wordEl.textContent;
-        document.getElementById('defMeaning').textContent = def;
+        closeDefTooltip();
 
-        if (_defTooltipTarget) _defTooltipTarget.classList.remove('active');
+        // In-flow panel: sits right under the question text and pushes the
+        // options down, so the definition never covers an answer.
+        const panel = document.createElement('div');
+        panel.className = 'kw-def-panel';
+        const wordSpan = document.createElement('div');
+        wordSpan.className = 'def-word';
+        wordSpan.textContent = wordEl.textContent;
+        const meaningSpan = document.createElement('div');
+        meaningSpan.className = 'def-meaning';
+        meaningSpan.textContent = def;
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'def-close';
+        closeBtn.setAttribute('aria-label', 'إغلاق التعريف');
+        closeBtn.textContent = '✕';
+        closeBtn.onclick = (e) => { e.stopPropagation(); closeDefTooltip(); };
+        panel.appendChild(closeBtn);
+        panel.appendChild(wordSpan);
+        panel.appendChild(meaningSpan);
+        const qText = card.querySelector('.question-text');
+        if (!qText) return;
+        qText.insertAdjacentElement('afterend', panel);
+        requestAnimationFrame(() => panel.classList.add('show'));
+
         _defTooltipTarget = wordEl;
         wordEl.classList.add('active');
-
-        tooltip.classList.remove('show');
-        tooltip.style.display = 'block'; // measure width
-        const wordRect = wordEl.getBoundingClientRect();
-        const ttW = tooltip.offsetWidth;
-        const margin = 10;
-        const vpW = window.innerWidth;
-
-        let left = wordRect.left + wordRect.width / 2 - ttW / 2;
-        left = Math.max(margin, Math.min(left, vpW - ttW - margin));
-        const top = wordRect.bottom + 8;
-        const arrowLeft = Math.round(wordRect.left + wordRect.width / 2 - left);
-
-        tooltip.style.left = left + 'px';
-        tooltip.style.top = top + 'px';
-        tooltip.style.setProperty('--def-arrow-left', arrowLeft + 'px');
-
-        requestAnimationFrame(() => tooltip.classList.add('show'));
     }
 
     function closeDefTooltip() {
-        const tooltip = document.getElementById('kwDefTooltip');
-        tooltip.classList.remove('show');
+        document.querySelectorAll('.kw-def-panel').forEach(p => p.remove());
         if (_defTooltipTarget) {
             _defTooltipTarget.classList.remove('active');
             _defTooltipTarget = null;
@@ -3911,8 +3940,8 @@ self.addEventListener('fetch', e => {
             if (tooltip && !tooltip.contains(e.target) && !e.target.classList.contains('kw-chip')) {
                 closeKwTooltip();
             }
-            const defTooltip = document.getElementById('kwDefTooltip');
-            if (defTooltip && !defTooltip.contains(e.target) && !e.target.classList.contains('kw-clickable')) {
+            const defPanel = document.querySelector('.kw-def-panel');
+            if (defPanel && !defPanel.contains(e.target) && !e.target.classList.contains('kw-clickable')) {
                 closeDefTooltip();
             }
         });
